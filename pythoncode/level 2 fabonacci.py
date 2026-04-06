@@ -1,12 +1,24 @@
-def fibonacci(n):
-    """Generate Fibonacci sequence using generator."""
+def generate_fibonacci(n: int):
+    """
+    A generator function that yields the first n terms 
+    of the Fibonacci sequence.
+    """
     a, b = 0, 1
     for _ in range(n):
         yield a
         a, b = b, a + b
 
-try:
-    count = int(input("Enter number of terms: "))
-    print(f"Fibonacci sequence: {list(fibonacci(count))}")
-except ValueError:
-    print("Invalid input. Enter a positive integer.")
+if __name__ == "__main__":
+    try:
+        count = int(input("How many Fibonacci terms would you like to generate? "))
+        
+        if count <= 0:
+            print("Please enter a positive integer greater than 0.")
+        else:
+            # Converting generator to list for display
+            sequence = list(generate_fibonacci(count))
+            # Joining list into a string for cleaner output
+            print(f"Fibonacci sequence ({count} terms): {', '.join(map(str, sequence))}")
+            
+    except ValueError:
+        print("Invalid input. Please enter a whole number.")
