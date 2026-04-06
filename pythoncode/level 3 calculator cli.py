@@ -1,46 +1,23 @@
-def calculate(num1, operator, num2):
-    """
-    Performs basic arithmetic operations.
-    Supports: +, -, *, /
-    """
-    if operator == '+':
-        return num1 + num2
-    elif operator == '-':
-        return num1 - num2
-    elif operator == '*':
-        return num1 * num2
-    elif operator == '/':
-        return num1 / num2
-    else:
-        # If the operator isn't recognized, raise an error
-        raise ValueError("Unsupported operator.")
+import operator
 
-print("--- Simple CLI Calculator ---")
-print("Type 'exit' at any time to close.")
+# Map operator symbols to their corresponding functions
+OPS = {'+': operator.add, '-': operator.sub, '*': operator.mul, '/': operator.truediv}
 
+def calculate(n1, op, n2):
+    """Performs arithmetic using the OPS dictionary; raises error for invalid ops."""
+    if op not in OPS: raise ValueError(f"Unsupported operator: {op}")
+    return OPS[op](n1, n2)
+
+print("--- Simple CLI Calculator (Type 'exit' to quit) ---")
 while True:
-    user_input = input("\nEnter expression (e.g., 10 + 5): ").strip()
-    
-    if user_input.lower() == 'exit':
-        print("Closing calculator...")
-        break
-
+    val = input("\nEnter (e.g. 10 + 5): ").strip()
+    if val.lower() == 'exit': break
     try:
-        # Split input into three parts: number, operator, number
-        parts = user_input.split()
-        if len(parts) != 3:
-            print("Error: Format must be <num1> <op> <num2>")
-            continue
-
-        n1 = float(parts[0])
-        op = parts[1]
-        n2 = float(parts[2])
-
-        # Call the calculation function
-        result = calculate(n1, op, n2)
-        print(f"Result: {result}")
-
+        # Split and unpack the input string
+        n1_str, op, n2_str = val.split()
+        res = calculate(float(n1_str), op, float(n2_str))
+        print(f"Result: {res}")
     except ZeroDivisionError:
-        print("Error: You cannot divide by zero.")
-    except ValueError as e:
-        print(f"Error: {e if 'Unsupported' in str(e) else 'Please enter valid numbers.'}")
+        print("Error: Cannot divide by zero.")
+    except (ValueError, IndexError):
+        print("Error: Use format <num> <op> <num> with valid numbers.")
